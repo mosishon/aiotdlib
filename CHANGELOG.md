@@ -1,5 +1,51 @@
 # aiotdlib CHANGELOG
 
+### 0.19.1 - Hotfix
+
+#### Fixed
+
+* Fixed #31
+
+### 0.19.0 - TDLib 1.8.4
+
+#### Breaking
+
+* Most of `Client` class methods renamed to match python protected members convention
+
+#### Fixed
+
+* Fixed #17
+
+* Fixed #25 by removing wrong update handler
+
+#### Added
+
+* Added reactions related updates handlers in `ClientCache`
+
+* Added missing params in methods docs
+
+#### Updated
+
+* TDLib binaries upgraded to latest [available version](https://github.com/pylakey/td/commit/6d485aa0b672ca4b5eccf05d6e5538c6988f12ef) (1.8.4 from now)
+
+* API types and functions regenerated
+
+* Upgraded dependencies
+
+### 0.18.0 - TDLib 1.8.3
+
+> This update may contain some breaking API changes!
+
+#### Updated
+
+* TDLib binaries upgraded to latest [available version](https://github.com/pylakey/td/commit/f295ef3a0d3545970bfd658c3443496be3d28397) (1.8.3 from now)
+
+* API types and functions regenerated
+
+* Prebuilt TDLib binary for linux arm64 is not more provided, but you can build them yourself and use with aiotdlib
+
+> Prebuilt binaries for other systems and platforms will not be provided as well in future aiotdlib releases
+
 ### 0.17.0 - TDLib 1.8.1
 
 > This update may contain some breaking API changes!

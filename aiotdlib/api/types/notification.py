@@ -21,7 +21,7 @@ class Notification(BaseObject):
     :param date: Notification date
     :type date: :class:`int`
     
-    :param is_silent: True, if the notification was initially silent
+    :param is_silent: True, if the notification was explicitly sent without sound
     :type is_silent: :class:`bool`
     
     :param type_: Notification type

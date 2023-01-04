@@ -2,6 +2,7 @@ import asyncio
 import base64
 import getpass
 import logging
+import os
 import re
 import sys
 from functools import partial
@@ -12,15 +13,15 @@ from typing import (
 )
 
 from .api import (
-    BadRequest,
     BaseObject,
     Error,
+    InputFileId,
+    InputFileLocal,
+    InputFileRemote,
+    InputThumbnail,
 )
-from .api.errors import (
-    AioTDLibError,
-    NotFound,
-    Unauthorized,
-)
+from .api.errors import AioTDLibError
+from .api.errors.error import http_code_to_error
 
 if TYPE_CHECKING:
     from .client import Client
@@ -64,6 +65,27 @@ def strip_phone_number_symbols(phone_number: str) -> str:
     return re.sub(r'(?<!^)|[^\d]+', '', phone_number)
 
 
+def make_input_file(file: Union[str, int]) -> Union[InputFileId, InputFileLocal, InputFileRemote]:
+    if os.path.exists(file):
+        return InputFileLocal(path=file)
+    elif isinstance(file, int):
+        return InputFileId(id=file)
+
+    return InputFileRemote(id=file)
+
+
+def make_thumbnail(thumbnail: str, width: int = None, height: int = None) -> Optional[InputThumbnail]:
+    if isinstance(thumbnail, str):
+        return InputThumbnail.construct(
+            # Sending thumbnails by file_id is currently not supported
+            thumbnail=InputFileLocal(path=thumbnail),
+            width=width,
+            height=height,
+        )
+
+    return None
+
+
 class PendingRequest:
     request: Optional[BaseObject] = None
     update: Optional[BaseObject] = None
@@ -96,13 +118,10 @@ class PendingRequest:
 
     def raise_error(self):
         if isinstance(self.update, Error):
-            if self.update.code == 400:
-                raise BadRequest(self.update.message)
-            elif self.update.code == 401:
-                raise Unauthorized(self.update.message)
-            elif self.update.code == 404:
-                raise NotFound(self.update.message)
-
-            raise AioTDLibError(self.update.code, self.update.message)
+            http_error = http_code_to_error.get(self.update.code, AioTDLibError)
+            raise http_error(
+                code=self.update.code,
+                message=self.update.message
+            )
 
         raise RuntimeError(f'Unknown TDLib error')

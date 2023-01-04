@@ -49,6 +49,9 @@ class User(BaseObject):
     :param is_verified: True, if the user is verified
     :type is_verified: :class:`bool`
     
+    :param is_premium: True, if the user is a Telegram Premium user
+    :type is_premium: :class:`bool`
+    
     :param is_support: True, if the user is Telegram support account
     :type is_support: :class:`bool`
     
@@ -61,7 +64,7 @@ class User(BaseObject):
     :param is_fake: True, if many users reported this user as a fake account
     :type is_fake: :class:`bool`
     
-    :param have_access: If false, the user is inaccessible, and the only information known about the user is inside this class. It can't be passed to any method except GetUser
+    :param have_access: If false, the user is inaccessible, and the only information known about the user is inside this class. Identifier of the user can't be passed to any method except GetUser
     :type have_access: :class:`bool`
     
     :param type_: Type of the user
@@ -69,6 +72,9 @@ class User(BaseObject):
     
     :param language_code: IETF language tag of the user's language; only available to bots
     :type language_code: :class:`str`
+    
+    :param added_to_attachment_menu: True, if the user added the current bot to attachment menu; only available to bots
+    :type added_to_attachment_menu: :class:`bool`
     
     """
 
@@ -83,6 +89,7 @@ class User(BaseObject):
     is_contact: bool
     is_mutual_contact: bool
     is_verified: bool
+    is_premium: bool
     is_support: bool
     restriction_reason: str
     is_scam: bool
@@ -90,6 +97,7 @@ class User(BaseObject):
     have_access: bool
     type_: UserType = Field(..., alias='type')
     language_code: str
+    added_to_attachment_menu: bool
 
     @staticmethod
     def read(q: dict) -> User:

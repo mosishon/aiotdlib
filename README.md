@@ -4,15 +4,18 @@
 [![PyPI pyversions](https://img.shields.io/pypi/pyversions/aiotdlib.svg)](https://pypi.python.org/pypi/aiotdlib/)
 [![PyPI license](https://img.shields.io/pypi/l/aiotdlib.svg)](https://pypi.python.org/pypi/aiotdlib/)
 
-> This wrapper is actual for **[TDLib v1.8.1 (1e1ab5d)](https://github.com/pylakey/td/commit/1e1ab5d1b0e4811e6d9e1584a82da08448d0cada)**
+> This wrapper is actual
+> for **[TDLib v1.8.4 (6d485aa)](https://github.com/pylakey/td/commit/6d485aa0b672ca4b5eccf05d6e5538c6988f12ef)**
 >
-> This package includes prebuilt TDLib binaries for macOS (arm64) and Debian Buster (amd64, arm64).
-> You can use your own binary by passing `library_path` argument to `Client` class constructor. Make sure it's built from [this commit](https://github.com/tdlib/td/commit/1e1ab5d1b0e4811e6d9e1584a82da08448d0cada). Compatibility with other versions of library is not guaranteed.
+> This package includes prebuilt TDLib binaries for macOS (arm64) and Debian Bullseye (amd64).
+> You can use your own binary by passing `library_path` argument to `Client` class constructor. Make sure it's built
+> from [this commit](https://github.com/tdlib/td/commit/6d485aa0b672ca4b5eccf05d6e5538c6988f12ef). Compatibility with
+> other versions of library is not guaranteed.
 
 ## Features
 
 * All types and functions are generated automatically
-  from [tl schema](https://github.com/tdlib/td/blob/1e1ab5d1b0e4811e6d9e1584a82da08448d0cada/td/generate/scheme/td_api.tl)
+  from [tl schema](https://github.com/tdlib/td/blob/6d485aa0b672ca4b5eccf05d6e5538c6988f12ef/td/generate/scheme/td_api.tl)
 * All types and functions come with validation and good IDE type hinting (thanks
   to [Pydantic](https://github.com/samuelcolvin/pydantic))
 * A set of high-level API methods which makes work with tdlib much simpler
@@ -35,32 +38,6 @@ or if you use [Poetry](https://python-poetry.org)
 
 ```shell
 poetry add aiotdlib
-```
-
-### Docker
-
-You can use [this Docker image](https://hub.docker.com/r/pylakey/aiotdlib) as a base for your own image.
-
-Any parameter of Client class could be set via environment variables.
-
-#### Example
-
-main.py
-
-```python
-from aiotdlib import Client
-
-client = Client()
-client.run()
-```
-
-and run it like this:
-
-```shell
-export AIOTDLIB_API_ID=123456
-export AIOTDLIB_API_HASH=<my_api_hash>
-export AIOTDLIB_BOT_TOKEN=<my_bot_token>
-python main.py
 ```
 
 ## Examples
@@ -93,6 +70,35 @@ async def main():
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
     asyncio.run(main())
+```
+
+Any parameter of Client class could be also set via environment variables.
+
+```python
+import asyncio
+import logging
+
+from aiotdlib import Client
+
+
+async def main():
+    async with Client() as client:
+        me = await client.api.get_me()
+        logging.info(f"Successfully logged in as {me.json()}")
+
+
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.INFO)
+    asyncio.run(main())
+```
+
+and run it like this:
+
+```shell
+export AIOTDLIB_API_ID=123456
+export AIOTDLIB_API_HASH=<my_api_hash>
+export AIOTDLIB_BOT_TOKEN=<my_bot_token>
+python main.py
 ```
 
 ### Events handlers
@@ -234,13 +240,8 @@ if __name__ == '__main__':
 import asyncio
 import logging
 
-from aiotdlib import Client,
-
-HandlerCallable
-from aiotdlib.api import API,
-
-BaseObject,
-UpdateNewMessage
+from aiotdlib import Client, HandlerCallable
+from aiotdlib.api import API, BaseObject, UpdateNewMessage
 
 API_ID = 12345
 API_HASH = ""
